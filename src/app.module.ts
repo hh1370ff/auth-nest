@@ -6,7 +6,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 import { validationSchema } from './configValidationSchema';
-import { AvatarToDbModule } from './avatar/SaveOnDb/avatarDb.module';
 import { MailModule } from './mail/mail.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { EmailScheduleModule } from './email-schedule/email-schedule.module';
@@ -35,7 +34,6 @@ import { AvatarLocalModule } from './avatar/saveOnServer/avatarLocal.module';
     }),
     AuthModule,
     UserModule,
-    AvatarToDbModule,
     AvatarLocalModule,
     MailModule,
     EmailScheduleModule,

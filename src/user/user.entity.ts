@@ -1,5 +1,4 @@
 import { Exclude } from 'class-transformer';
-import { Avatar } from 'src/avatar/SaveOnDb/entity/avatar.entity';
 import { AvatarLocal } from 'src/avatar/saveOnServer/entity/AvatarLocal.entity';
 import {
   Column,
@@ -61,13 +60,6 @@ export class User {
   })
   @Exclude()
   hashedRefresh: string;
-
-  @JoinColumn({ name: 'avatarId' })
-  @OneToOne(() => Avatar, { nullable: true })
-  avatar: Avatar;
-
-  @Column({ nullable: true })
-  avatarId: string;
 
   @Exclude()
   @JoinColumn()
