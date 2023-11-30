@@ -25,7 +25,6 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { instanceToPlain } from 'class-transformer';
 
 @ApiTags('Auth')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -56,7 +55,7 @@ export class AuthController {
     description:
       'Triggering this rout with valid email and a password register new users into the database.',
   })
-  @Post('singUp')
+  @Post('signUp')
   async singUp(@Body() user: CreateUserDto) {
     // Implementation for POST /auth/singUp
 

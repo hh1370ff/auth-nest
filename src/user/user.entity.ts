@@ -1,5 +1,5 @@
 import { Exclude } from 'class-transformer';
-import { AvatarLocal } from 'src/avatar/saveOnServer/entity/AvatarLocal.entity';
+import { AvatarLocal } from 'src/avatar/entity/AvatarLocal.entity';
 import {
   Column,
   Entity,

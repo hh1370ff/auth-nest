@@ -4,7 +4,17 @@ services:
   db:
     image: postgres
     restart: always
-    ports:
-      - '5432:5432'
     environment:
       POSTGRES_PASSWORD: pass123
+
+  auth:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      target: development
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - .env

@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, GoneException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { MailService } from 'src/mail/mail.service';
@@ -30,15 +30,11 @@ export class EmailConfirmationService {
       const { email } = this.jwtService.verify(token, {
         secret: this.configService.get('JWT_VERIFICATION_TOKEN_SECRET'),
       });
-      console.log(
-        '🚀 ~ file: email-confirmation.service.ts:39 ~ EmailConfirmationService ~ decodeToken ~ email:',
-        email,
-      );
 
       return email;
     } catch (error) {
       if (error?.name === 'TokenExpiredError') {
-        throw new BadRequestException('Email confirmation token expired');
+        throw new GoneException('Email confirmation token expired');
       }
       throw new BadRequestException('Bad confirmation token');
     }

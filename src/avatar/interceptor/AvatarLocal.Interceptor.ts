@@ -1,10 +1,20 @@
-import { Injectable, NestInterceptor, mixin } from '@nestjs/common';
+import {
+  CallHandler,
+  ConflictException,
+  ExecutionContext,
+  Injectable,
+  NestInterceptor,
+  mixin,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import { diskStorage } from 'multer';
 interface AvatarLocalsInterceptorOptions {
   fieldName: string;
   path?: string;
+  fileFilter?: MulterOptions['fileFilter'];
+  limits?: MulterOptions['limits'];
 }
 
 export function AvatarLocalInterceptor(
@@ -28,13 +38,24 @@ export function AvatarLocalInterceptor(
         },
       });
 
-      this.fileInterceptor = new (FileInterceptor(options.fieldName, {
+      const multerOptions: MulterOptions = {
         storage,
-      }))();
+        fileFilter: options.fileFilter,
+        limits: options.limits,
+      };
+
+      this.fileInterceptor = new (FileInterceptor(
+        options.fieldName,
+        multerOptions,
+      ))();
     }
 
-    intercept(...args: Parameters<NestInterceptor['intercept']>) {
-      return this.fileInterceptor.intercept(...args);
+    intercept(context: ExecutionContext, next: CallHandler) {
+      const user = context.switchToHttp().getRequest().user;
+      if (user.AvatarLocal)
+        throw new ConflictException('You already have an avatar!');
+
+      return this.fileInterceptor.intercept(context, next);
     }
   }
   return mixin(CustomFileInterceptor);

@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
@@ -8,10 +6,9 @@ import { UserModule } from './user/user.module';
 import { validationSchema } from './configValidationSchema';
 import { MailModule } from './mail/mail.module';
 import { ScheduleModule } from '@nestjs/schedule';
-import { EmailScheduleModule } from './email-schedule/email-schedule.module';
 import { EmailConfirmationModule } from './email-confirmation/email-confirmation.module';
 import { GoogleAuthenticationModule } from './google-authentication/google-authentication.module';
-import { AvatarLocalModule } from './avatar/saveOnServer/avatarLocal.module';
+import { AvatarLocalModule } from './avatar/avatarLocal.module';
 @Module({
   imports: [
     ScheduleModule.forRoot(),
@@ -36,11 +33,8 @@ import { AvatarLocalModule } from './avatar/saveOnServer/avatarLocal.module';
     UserModule,
     AvatarLocalModule,
     MailModule,
-    EmailScheduleModule,
     EmailConfirmationModule,
     GoogleAuthenticationModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

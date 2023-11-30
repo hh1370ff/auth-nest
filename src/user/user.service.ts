@@ -18,9 +18,9 @@ import {
 import * as bcrypt from 'bcrypt';
 import { PostgresErrorCode } from 'src/common/postgres_error_code/postgresErrorCode';
 import { UserView } from 'src/auth/types';
-import { AvatarLocalDto } from 'src/avatar/saveOnServer/dto/AvatarLocalDto';
-import AvatarLocalService from 'src/avatar/saveOnServer/avatarLocal.service';
-import { AvatarLocal } from 'src/avatar/saveOnServer/entity/AvatarLocal.entity';
+
+import AvatarLocalService from 'src/avatar/avatarLocal.service';
+import { AvatarLocal } from 'src/avatar/entity/AvatarLocal.entity';
 
 @Injectable()
 export class UserService {
@@ -35,28 +35,16 @@ export class UserService {
     relations?: Record<string, boolean>,
   ): Promise<User | null> {
     let result;
-    console.log(
-      '🚀 ~ file: user.service.ts:37 ~ UserService ~ result:',
-      result,
-    );
 
     if (!relations) {
       result = await this.userRepository.findOne({
         where: { email },
       });
-      console.log(
-        '🚀 ~ file: user.service.ts:37 ~ UserService ~ result:',
-        result,
-      );
     } else {
       result = await this.userRepository.findOne({
         where: { email },
         relations,
       });
-      console.log(
-        '🚀 ~ file: user.service.ts:37 ~ UserService ~ result:',
-        result,
-      );
     }
 
     return result ? result : null;
@@ -124,16 +112,8 @@ export class UserService {
     id: string,
     updateQuery: Partial<User>,
   ): Promise<UpdateResult> {
-    console.log(
-      '🚀 ~ file: user.service.ts:126 ~ UserService ~ updateQuery:',
-      updateQuery,
-    );
-    // const updated = await this.userRepository.update(id, updateQuery);
     const updated = await this.userRepository.update(id, updateQuery);
-    console.log(
-      '🚀 ~ file: user.service.ts:131 ~ UserService ~ updated:',
-      updated,
-    );
+
     return updated;
   }
 

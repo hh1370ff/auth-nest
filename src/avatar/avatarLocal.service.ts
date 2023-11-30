@@ -1,4 +1,9 @@
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  NotFoundException,
+  forwardRef,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AvatarLocalDto } from './dto/AvatarLocalDto';
@@ -25,10 +30,18 @@ class AvatarLocalService {
     return newFile;
   }
 
-  async deleteAvatarFromServer(user: Partial<User>) {
-    const relation = { AvatarLocal: true };
-    const userData = await this.userService.findOne(user.email, relation);
+  async getFileById(fileId: string) {
+    const file = await this.AvatarLocalsRepository.findOne({
+      where: { id: fileId },
+    });
 
+    if (!file) {
+      throw new NotFoundException();
+    }
+    return file;
+  }
+
+  async deleteAvatarFromServer(userData: Partial<User>) {
     if (userData && userData.AvatarLocal && userData.AvatarLocal.path) {
       const { path, id } = userData.AvatarLocal;
       const queryRunner = this.dataSource.createQueryRunner();
@@ -36,7 +49,9 @@ class AvatarLocalService {
       try {
         await queryRunner.connect();
         await queryRunner.startTransaction();
-        await queryRunner.manager.update(User, user.id, { AvatarLocal: null });
+        await queryRunner.manager.update(User, userData.id, {
+          AvatarLocal: null,
+        });
         await queryRunner.manager.delete(AvatarLocal, id);
         await queryRunner.commitTransaction();
       } catch (error) {

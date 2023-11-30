@@ -3,7 +3,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class AvatarLocal {
   @PrimaryGeneratedColumn('uuid')
-  public id: string;
+  id: string;
 
   @Column()
   filename: string;

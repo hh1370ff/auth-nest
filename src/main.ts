@@ -26,7 +26,7 @@ async function bootstrap() {
     .setTitle('Auth back')
     .setDescription('some stuffs about authentication and authorization')
     .setVersion('1.0')
-    .addTag('Auth')
+    .addCookieAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
